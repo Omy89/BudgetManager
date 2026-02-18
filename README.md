@@ -43,35 +43,27 @@ Aplicar los conocimientos de bases de datos relacionales mediante el diseño e i
 ## Estructura del repositorio
 
 proyecto-presupuesto-personal/
-├── README.md # Descripción del proyecto
+├── README.md
 ├── docs/
-│ ├── ERD.png # Diagrama Entidad-Relación
-│ ├── ModeloRelacional.pdf # Modelo Relacional documentado
-│ ├── DiccionarioDatos.xlsx # Diccionario de datos
-│ └── Reportes.pdf # Documentación de reportes con SQL
+│   ├── ERD.png
+│   ├── ModeloRelacional.pdf
+│   ├── DiccionarioDatos.xlsx
+│   └── Reportes.pdf
 ├── database/
-│ ├── DDL/
-│ │ └── 01_crear_tablas.sql
-│ ├── procedimientos/
-│ │ ├── crud_usuario.sql
-│ │ ├── crud_categoria.sql
-│ │ └── ... (otros procedimientos)
-│ ├── funciones/
-│ │ └── funciones.sql
-│ ├── triggers/
-│ │ └── triggers.sql
-│ └── datos_prueba/
-│ └── insertar_datos.sql
+│   ├── DDL/
+│   │   └── 01_crear_tablas.sql
+│   ├── procedimientos/
+│   │   ├── crud_usuario.sql
+│   │   ├── crud_categoria.sql
+│   │   └── ...
+│   ├── funciones/
+│   │   └── funciones.sql
+│   ├── triggers/
+│   │   └── triggers.sql
+│   └── datos_prueba/
+│       └── insertar_datos.sql
 ├── backend/
-│ ├── src/
-│ ├── package.json (o equivalente)
-│ └── README.md
-├── frontend/
-│ ├── src/
-│ ├── assets/
-│ └── README.md
-└── metabase/
-└── metabase_backup.zip
+│
 
 
 ---
