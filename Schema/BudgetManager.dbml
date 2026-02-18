@@ -1,0 +1,93 @@
+Table users {
+  userId int [primary key]
+  firstName varchar2
+  lastName varchar2
+  userEmail varchar2 [unique]
+  registrationDate date
+  baseSalary decimal(10,2)
+  isActive int
+}
+
+Table budgets {
+  budgetId int [primary key]
+  userId int
+  budgetName varchar2
+  startYear int
+  startMonth int
+  endYear int
+  endMonth int
+  expectedIncome decimal(10,2)
+  expectedExpenses decimal(10,2)
+  expectedSavings decimal(10,2)
+  creationDate datetime
+  budgetStatus varchar2
+}
+
+Table categories {
+  categoryId int [primary key]
+  categoryName varchar2
+  categoryDescription varchar2
+  categoryType varchar2
+  categoryIcon varchar2
+  colorHex varchar2
+  displayOrder int
+}
+
+Table subCategories {
+  subCategoryId int [primary key]
+  categoryId int
+  subCategoryName varchar2
+  subCategoryDescription varchar2
+  isActive int
+  isDefault int
+}
+
+Table budgetDetails {
+  detailId int [primary key]
+  budgetId int
+  subCategoryId int
+  monthlyAmount decimal(10,2)
+  justificationNote varchar2
+}
+
+Table fixedExpenses {
+  expenseId int [primary key]
+  userId int
+  subCategoryId int
+  expenseName varchar2
+  expenseDescription varchar2
+  fixedMonthlyAmount decimal(10,2)
+  paymentDay int
+  isActive int
+  startDate date
+  endDate date
+}
+
+Table transactions {
+  transactionId int [primary key]
+  userId int
+  budgetId int
+  transactionYear int
+  transactionMonth int
+  subCategoryId int
+  expenseId int [null]
+  transactionType varchar2
+  transactionDescription varchar2
+  transactionAmount decimal(10,2)
+  transactionDate date
+  paymentMethod varchar2
+  receiptNumber varchar2
+  transactionNotes varchar2
+  registrationDate datetime
+}
+
+Ref: users.userId < budgets.userId
+Ref: budgets.budgetId < budgetDetails.budgetId
+Ref: categories.categoryId < subCategories.categoryId
+Ref: subCategories.subCategoryId < budgetDetails.subCategoryId
+Ref: users.userId < fixedExpenses.userId
+Ref: subCategories.subCategoryId < fixedExpenses.subCategoryId
+Ref: users.userId < transactions.userId
+Ref: budgets.budgetId < transactions.budgetId
+Ref: subCategories.subCategoryId < transactions.subCategoryId
+Ref: fixedExpenses.expenseId < transactions.expenseId
