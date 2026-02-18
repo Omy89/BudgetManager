@@ -65,14 +65,6 @@ proyecto-presupuesto-personal/
 ├── backend/
 │
 
-
----
-
-## Estado del proyecto
-
-Proyecto académico en desarrollo.  
-Actualmente incluye el diseño del modelo de datos, scripts SQL y la integración inicial con una aplicación Java en consola.
-
 ---
 
 ## Autor
