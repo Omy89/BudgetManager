@@ -374,19 +374,19 @@ CREATE OR REPLACE PROCEDURE OMY.insert_user (
     p_user_email    IN OMY.USERS.USER_EMAIL%TYPE,
     p_base_salary   IN OMY.USERS.BASE_SALARY%TYPE,
     p_created_by    IN OMY.USERS.CREATED_BY%TYPE,
-    p_user_password IN OMY.USERS.USER_PASSWORD%TYPE
+    p_user_password IN OMY.USERS.USER_PASSWORD%TYPE,
+    p_user_role     IN OMY.USERS.USER_ROLE%TYPE DEFAULT 'USER'
 )
 AS
 BEGIN
     INSERT INTO OMY.USERS (
         FIRST_NAME, LAST_NAME, USER_EMAIL,
         BASE_SALARY, CREATED_BY, USER_PASSWORD,
-        REGISTRATION_DATE
-    )
-    VALUES (
-        p_first_name, p_last_name, p_user_email,
+        USER_ROLE, REGISTRATION_DATE
+    ) VALUES (
+        p_first_name, p_last_name, LOWER(TRIM(p_user_email)),
         p_base_salary, p_created_by, p_user_password,
-        SYSDATE
+        NVL(UPPER(TRIM(p_user_role)), 'USER'), SYSDATE
     );
     COMMIT;
 END;
@@ -800,6 +800,51 @@ BEGIN
         UPDATED_AT  = CURRENT_TIMESTAMP
     WHERE USER_ID = p_user_id;
     COMMIT;
+END;
+
+CREATE OR REPLACE PROCEDURE OMY.sp_list_all_budgets (
+    p_user_id IN  OMY.BUDGETS.USER_ID%TYPE,
+    p_role    IN  OMY.USERS.USER_ROLE%TYPE,
+    p_result  OUT SYS_REFCURSOR
+)
+AS
+BEGIN
+    IF UPPER(TRIM(p_role)) = 'ADMIN' THEN
+        OPEN p_result FOR
+            SELECT b.BUDGET_ID,
+                   b.BUDGET_NAME,
+                   b.START_YEAR,
+                   b.START_MONTH,
+                   b.END_YEAR,
+                   b.END_MONTH,
+                   b.BUDGET_STATUS,
+                   b.EXPECTED_INCOME,
+                   b.EXPECTED_EXPENSES,
+                   b.EXPECTED_SAVINGS,
+                   u.FIRST_NAME || ' ' || u.LAST_NAME AS OWNER_NAME,
+                   u.USER_EMAIL                        AS OWNER_EMAIL
+              FROM OMY.BUDGETS b
+             INNER JOIN OMY.USERS u ON u.USER_ID = b.USER_ID
+             ORDER BY b.BUDGET_ID DESC;
+    ELSE
+        OPEN p_result FOR
+            SELECT b.BUDGET_ID,
+                   b.BUDGET_NAME,
+                   b.START_YEAR,
+                   b.START_MONTH,
+                   b.END_YEAR,
+                   b.END_MONTH,
+                   b.BUDGET_STATUS,
+                   b.EXPECTED_INCOME,
+                   b.EXPECTED_EXPENSES,
+                   b.EXPECTED_SAVINGS,
+                   u.FIRST_NAME || ' ' || u.LAST_NAME AS OWNER_NAME,
+                   u.USER_EMAIL                        AS OWNER_EMAIL
+              FROM OMY.BUDGETS b
+             INNER JOIN OMY.USERS u ON u.USER_ID = b.USER_ID
+             WHERE b.USER_ID = p_user_id
+             ORDER BY b.BUDGET_ID DESC;
+    END IF;
 END;
 
 CREATE SEQUENCE OMY."ISEQ$$_75269" INCREMENT BY 1 MINVALUE 1 MAXVALUE 9999999999999999999999999999 NOCYCLE CACHE 20 NOORDER ;
