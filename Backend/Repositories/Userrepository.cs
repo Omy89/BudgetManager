@@ -24,12 +24,11 @@ namespace BudgetManager.Repositories
 
             if (role.ToUpper() == "ADMIN")
             {
-                using var cmdRole = new OracleCommand(
-                    "UPDATE OMY.USERS SET USER_ROLE = 'ADMIN' WHERE USER_EMAIL = :email", conn);
-                cmdRole.Parameters.Add("email", OracleDbType.Varchar2).Value = email.ToLower().Trim();
+                using var cmdRole = new OracleCommand("OMY.set_user_role", conn);
+                cmdRole.CommandType = System.Data.CommandType.StoredProcedure;
+                cmdRole.Parameters.Add("p_user_email", OracleDbType.Varchar2).Value = email.ToLower().Trim();
+                cmdRole.Parameters.Add("p_role", OracleDbType.Varchar2).Value = "ADMIN";
                 cmdRole.ExecuteNonQuery();
-                using var commit = new OracleCommand("COMMIT", conn);
-                commit.ExecuteNonQuery();
             }
 
             Console.WriteLine("\n✔ User created successfully.");
