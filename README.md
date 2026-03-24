@@ -34,8 +34,8 @@ Aplicar los conocimientos de bases de datos relacionales mediante el diseño e i
 ## Tecnologías
 
 - **Base de datos:** Oracle Database  
-- **Herramienta SQL:** Oracle SQL Developer  
-- **Lenguaje backend:** Java  
+- **Herramienta SQL:** DBeaver 
+- **Lenguaje backend:** C#
 - **Control de versiones:** Git / GitHub  
 
 ---
